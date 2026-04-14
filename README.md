@@ -1,8 +1,9 @@
 # dalbit.nvim · 달빛
 
-A warm-accent, high-contrast dark colorscheme for Neovim.
-Inspired by [gruber-darker](https://github.com/rexim/gruber-darker-theme)
-and the night view of Seoul across the Han River.
+A warm-accent, high-contrast dark colorscheme for Neovim,
+inspired by [gruber-darker](https://github.com/rexim/gruber-darker-theme).
+
+![Screenshot](./screenshot.png)
 
 ## Requirements
 
