@@ -93,7 +93,7 @@ function M.get(c, cfg)
 
     -- Classic syntax groups
     Comment         = with({ fg = c.comment }, comment_style),
-    Constant        = { fg = c.orange },
+    Constant        = { fg = c.rose },
     String          = { fg = c.green },
     Character       = { fg = c.green },
     Number          = { fg = c.teal },
@@ -151,8 +151,8 @@ function M.get(c, cfg)
     ["@variable.member"]         = { fg = c.blue },
     ["@field"]                   = { fg = c.blue },
     ["@property"]                = { fg = c.blue },
-    ["@constant"]                = { fg = c.orange },
-    ["@constant.builtin"]        = { fg = c.orange, bold = true },
+    ["@constant"]                = { fg = c.rose },
+    ["@constant.builtin"]        = { fg = c.rose, bold = true },
     ["@constant.macro"]          = { fg = c.rose },
     ["@string"]                  = { fg = c.green },
     ["@string.escape"]           = { fg = c.rose },
