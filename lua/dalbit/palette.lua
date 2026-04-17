@@ -30,13 +30,10 @@ return {
   rose        = "#d07878",   -- self, macros, special
   comment     = "#9e988c",   -- warm gray
 
-  -- signals
-  diff_add_bg = "#19281a",
-  diff_add_fg = "#a9d979",
-  diff_del_bg = "#2a1614",
-  diff_del_fg = "#ef6a4a",
+  -- signals (backgrounds only — diff foregrounds use palette green/red/yellow)
+  diff_add_bg = "#1e2a1a",
+  diff_del_bg = "#2a1817",
   diff_chg_bg = "#24221a",
-  diff_chg_fg = "#d9a82e",
   search_bg   = "#403820",
   search_fg   = "#ffe08a",
   cursor_line = "#1d1d1d",

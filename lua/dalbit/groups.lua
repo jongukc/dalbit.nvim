@@ -80,10 +80,10 @@ function M.get(c, cfg)
     Underlined      = { fg = c.blue, underline = true },
 
     -- Diff
-    DiffAdd         = { fg = c.diff_add_fg, bg = c.diff_add_bg },
-    DiffChange      = { fg = c.diff_chg_fg, bg = c.diff_chg_bg },
-    DiffDelete      = { fg = c.diff_del_fg, bg = c.diff_del_bg },
-    DiffText        = { fg = c.yellow_br,   bg = c.diff_chg_bg, bold = true },
+    DiffAdd         = { fg = c.green,     bg = c.diff_add_bg },
+    DiffChange      = { fg = c.yellow,    bg = c.diff_chg_bg },
+    DiffDelete      = { fg = c.red,       bg = c.diff_del_bg },
+    DiffText        = { fg = c.yellow_br, bg = c.diff_chg_bg, bold = true },
 
     -- Spell
     SpellBad        = { sp = c.red,    undercurl = true },
@@ -186,14 +186,35 @@ function M.get(c, cfg)
     ["@tag.delimiter"]           = { fg = c.fg2 },
 
     -- Markup (markdown, help, etc.)
-    ["@markup.heading"]  = { fg = c.yellow_br, bold = true },
-    ["@markup.strong"]   = { fg = c.fg0, bold = true },
-    ["@markup.italic"]   = { fg = c.fg0, italic = true },
-    ["@markup.link"]     = { fg = c.blue, underline = true },
-    ["@markup.link.url"] = { fg = c.blue, underline = true },
-    ["@markup.raw"]      = { fg = c.green },
-    ["@markup.quote"]    = { fg = c.fg2, italic = true },
-    ["@markup.list"]     = { fg = c.orange },
+    ["@markup.heading"]   = { fg = c.yellow_br, bold = true },
+    ["@markup.strong"]    = { fg = c.fg0, bold = true },
+    ["@markup.italic"]    = { fg = c.fg0, italic = true },
+    ["@markup.link"]      = { fg = c.blue, underline = true },
+    ["@markup.link.url"]  = { fg = c.blue, underline = true },
+    ["@markup.raw"]       = { fg = c.green },
+    ["@markup.raw.block"] = { fg = c.fg2 },
+    ["@markup.quote"]     = { fg = c.fg2, italic = true },
+    ["@markup.list"]      = { fg = c.orange },
+
+    -- Per-level markdown headings (distinct colors; also seeds Markview palette derivation)
+    markdownH1 = { fg = c.red,    bold = true },
+    markdownH2 = { fg = c.yellow_br, bold = true },
+    markdownH3 = { fg = c.yellow, bold = true },
+    markdownH4 = { fg = c.green,  bold = true },
+    markdownH5 = { fg = c.blue,   bold = true },
+    markdownH6 = { fg = c.rose,   bold = true },
+    ["@markup.heading.1.markdown"] = { link = "markdownH1" },
+    ["@markup.heading.2.markdown"] = { link = "markdownH2" },
+    ["@markup.heading.3.markdown"] = { link = "markdownH3" },
+    ["@markup.heading.4.markdown"] = { link = "markdownH4" },
+    ["@markup.heading.5.markdown"] = { link = "markdownH5" },
+    ["@markup.heading.6.markdown"] = { link = "markdownH6" },
+
+    -- Diff (tree-sitter) — used inside ```diff code blocks, :Gdiffsplit, etc.
+    ["@diff"]       = { fg = c.fg2 },
+    ["@diff.plus"]  = { fg = c.green },
+    ["@diff.minus"] = { fg = c.red },
+    ["@diff.delta"] = { fg = c.yellow },
 
     -- Git signs / diff fallback
     GitSignsAdd        = { fg = c.green },
