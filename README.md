@@ -5,6 +5,21 @@ inspired by [gruber-darker](https://github.com/rexim/gruber-darker-theme).
 
 ![Screenshot](./screenshot.png)
 
+## Variants
+
+| `:colorscheme`        | description                                                                |
+| --------------------- | -------------------------------------------------------------------------- |
+| `dalbit`              | original — warm accents on neutral dark                                    |
+| `dalbit-mono`         | dark monochrome — grayscale syntax + one warm-red error accent             |
+| `dalbit-light`        | light — neutral-cool surfaces (no ivory) + darkened warm accents           |
+| `dalbit-mono-light`   | light monochrome — grayscale syntax on cool light + warm-red errors only   |
+
+Mono variants collapse all chromatic syntax onto the fg gray ladder; bold and
+italic do the differentiation. The single warm-red accent is reserved for
+errors / failing tests / urgent diagnostics. Light variants use a cool-tilted
+gray (B>R by ~4 units) instead of cream/parchment to avoid the "aged paper"
+warm cast that fatigues the eye in fluorescent or overcast ambient light.
+
 ## Requirements
 
 - Neovim ≥ 0.8 (tree-sitter captures use `@capture` format)

@@ -7,11 +7,16 @@ local M = {}
 function M.get(c, cfg)
 	cfg = cfg or {}
 	local s = cfg.styles or {}
+	local mono = c.is_mono == true
+
 	local comment_style = s.comments or { italic = true }
 	local keyword_style = s.keywords or { bold = true }
 	local function_style = s.functions or {}
-	local type_style = s.types or {}
 	local variable_style = s.variables or {}
+	-- mono variants need emphasis (bold types, italic strings) to compensate
+	-- for the hue collapse — applied on top of any user style.
+	local type_style = vim.tbl_extend("force", s.types or {}, mono and { bold = true } or {})
+	local string_style = mono and { italic = true } or {}
 
 	local transparent = cfg.transparent
 	local bg_norm = transparent and "NONE" or c.bg0
@@ -24,7 +29,7 @@ function M.get(c, cfg)
 		return vim.tbl_extend("force", base, style or {})
 	end
 
-	return {
+	local groups = {
 		-- Editor chrome
 		Normal = { fg = c.fg0, bg = bg_norm },
 		NormalNC = { fg = c.fg1, bg = bg_norm },
@@ -80,10 +85,10 @@ function M.get(c, cfg)
 		Underlined = { fg = c.blue, underline = true },
 
 		-- Diff
-		DiffAdd = { fg = c.green, bg = c.diff_add_bg },
-		DiffChange = { fg = c.yellow, bg = c.diff_chg_bg },
-		DiffDelete = { fg = c.red, bg = c.diff_del_bg },
-		DiffText = { fg = c.yellow_br, bg = c.diff_chg_bg, bold = true },
+		DiffAdd = { fg = c.diff_add_fg or c.green, bg = c.diff_add_bg },
+		DiffChange = { fg = c.diff_chg_fg or c.yellow, bg = c.diff_chg_bg },
+		DiffDelete = { fg = c.diff_del_fg or c.red, bg = c.diff_del_bg },
+		DiffText = { fg = c.diff_chg_fg or c.yellow_br, bg = c.diff_chg_bg, bold = true },
 
 		-- Spell
 		SpellBad = { sp = c.red, undercurl = true },
@@ -94,8 +99,8 @@ function M.get(c, cfg)
 		-- Classic syntax groups
 		Comment = with({ fg = c.comment }, comment_style),
 		Constant = { fg = c.rose },
-		String = { fg = c.green },
-		Character = { fg = c.green },
+		String = with({ fg = c.green }, string_style),
+		Character = with({ fg = c.green }, string_style),
 		Number = { fg = c.teal },
 		Boolean = { fg = c.orange, bold = true },
 		Float = { fg = c.teal },
@@ -114,7 +119,7 @@ function M.get(c, cfg)
 		PreProc = { fg = c.rose },
 		Include = with({ fg = c.orange }, keyword_style),
 		Define = with({ fg = c.orange }, keyword_style),
-		Macro = { fg = c.rose },
+		Macro = with({ fg = c.rose }, mono and { italic = true } or {}),
 		PreCondit = { fg = c.rose },
 
 		Type = with({ fg = c.yellow }, type_style),
@@ -122,7 +127,7 @@ function M.get(c, cfg)
 		Structure = with({ fg = c.yellow }, type_style),
 		Typedef = with({ fg = c.yellow }, type_style),
 
-		Special = { fg = c.rose },
+		Special = with({ fg = c.rose }, mono and { italic = true } or {}),
 		SpecialChar = { fg = c.rose },
 		Tag = { fg = c.teal },
 		Delimiter = { fg = c.fg2 },
@@ -154,7 +159,7 @@ function M.get(c, cfg)
 		["@constant"] = { fg = c.rose },
 		["@constant.builtin"] = { fg = c.rose, bold = true },
 		["@constant.macro"] = { fg = c.rose },
-		["@string"] = { fg = c.green },
+		["@string"] = with({ fg = c.green }, string_style),
 		["@string.escape"] = { fg = c.rose },
 		["@string.regex"] = { fg = c.teal_br },
 		["@number"] = { fg = c.teal },
@@ -162,7 +167,7 @@ function M.get(c, cfg)
 		["@function"] = with({ fg = c.yellow_br }, function_style),
 		["@function.builtin"] = with({ fg = c.yellow_br, italic = true }, function_style),
 		["@function.call"] = with({ fg = c.yellow_br }, function_style),
-		["@function.macro"] = { fg = c.rose },
+		["@function.macro"] = with({ fg = c.rose }, mono and { italic = true } or {}),
 		["@method"] = with({ fg = c.yellow_br }, function_style),
 		["@method.call"] = with({ fg = c.yellow_br }, function_style),
 		["@constructor"] = { fg = c.yellow },
@@ -180,7 +185,7 @@ function M.get(c, cfg)
 		["@operator"] = { fg = c.fg1 },
 		["@punctuation.delimiter"] = { fg = c.fg2 },
 		["@punctuation.bracket"] = { fg = c.fg2 },
-		["@punctuation.special"] = { fg = c.rose },
+		["@punctuation.special"] = with({ fg = c.rose }, mono and { italic = true } or {}),
 		["@tag"] = { fg = c.teal },
 		["@tag.attribute"] = { fg = c.yellow },
 		["@tag.delimiter"] = { fg = c.fg2 },
@@ -212,9 +217,9 @@ function M.get(c, cfg)
 
 		-- Diff (tree-sitter) — used inside ```diff code blocks, :Gdiffsplit, etc.
 		["@diff"] = { fg = c.fg2 },
-		["@diff.plus"] = { fg = c.green },
-		["@diff.minus"] = { fg = c.red },
-		["@diff.delta"] = { fg = c.yellow },
+		["@diff.plus"] = { fg = c.diff_add_fg or c.green },
+		["@diff.minus"] = { fg = c.diff_del_fg or c.red },
+		["@diff.delta"] = { fg = c.diff_chg_fg or c.yellow },
 
 		-- Git signs / diff fallback
 		GitSignsAdd = { fg = c.green },
@@ -242,6 +247,26 @@ function M.get(c, cfg)
 		WhichKeySeparator = { fg = c.fg_mute },
 		WhichKeyFloat = { bg = c.bg_soft },
 	}
+
+	-- ------------------------------------------------------------------------
+	-- Mono-variant overrides — restore some hierarchy that the chromatic
+	-- collapse would otherwise erase. Vary by lightness + weight, not hue.
+	-- ------------------------------------------------------------------------
+	if mono then
+		groups.markdownH1 = { fg = c.fg0, bold = true }
+		groups.markdownH2 = { fg = c.fg0 }
+		groups.markdownH3 = { fg = c.fg1, bold = true }
+		groups.markdownH4 = { fg = c.fg1 }
+		groups.markdownH5 = { fg = c.fg2, bold = true }
+		groups.markdownH6 = { fg = c.fg2 }
+		groups["@markup.heading"] = { fg = c.fg0, bold = true }
+		-- IncSearch / CurSearch use yellow_br as bg in chromatic; in mono
+		-- yellow_br collapses to fg0, which on bg0 is unreadable. Use search_*.
+		groups.IncSearch = { fg = c.search_fg, bg = c.search_bg, bold = true }
+		groups.CurSearch = { fg = c.search_fg, bg = c.search_bg, bold = true }
+	end
+
+	return groups
 end
 
 return M
