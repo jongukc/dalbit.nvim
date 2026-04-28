@@ -91,7 +91,7 @@ local MONO = {
 	teal_br = "#ced0d6",
 	blue = "#b8bac0", -- → fg1 (fields)
 	rose = "#a8aab0", -- → mid-gray (self/macros, italic)
-	comment = "#66686e", -- → fg_mute (italic)
+	comment = "#9295a0", -- comments — lifted to ~6.3:1 contrast (was fg_mute, only 3.5:1)
 
 	-- signals · faint chromatic tints, fg shifted ~10 units toward tint
 	diff_add_bg = "#1a201a",
@@ -129,33 +129,35 @@ local LIGHT = {
 	fg2 = "#5a5c64",
 	fg_mute = "#80828a",
 
-	-- accents · darkened versions of dalbit hues, ~4.5:1 against bg0
-	red = "#c4321a",
-	red_bright = "#e04830",
-	orange = "#9a521c",
-	yellow = "#a07000",
-	yellow_br = "#b88828",
-	green = "#3a7818",
-	green_dim = "#2a5808",
-	teal = "#22685c",
-	teal_br = "#388e80",
-	blue = "#2e6c8c",
-	rose = "#9a4a4a",
-	comment = "#7a7468",
+	-- accents · v2 — darkened to clear ~6:1 against bg0 (was 3.5–5:1).
+	-- yellow_br especially: was #b88828 (3.6:1, sub-AA) → #806010 (~5.3:1).
+	-- yellow:        was #a07000 (4.7:1)              → #6e4c00 (~7.1:1).
+	red = "#b02410",
+	red_bright = "#c83820",
+	orange = "#803a10",
+	yellow = "#6e4c00",
+	yellow_br = "#806010",
+	green = "#2a5e08",
+	green_dim = "#1c4406",
+	teal = "#1a5044",
+	teal_br = "#266660",
+	blue = "#0e3a64",
+	rose = "#7a3030",
+	comment = "#5e5848",
 
-	-- signals · light tinted bgs
+	-- signals · light tinted bgs (fg darkened to match v2 accents)
 	diff_add_bg = "#dcefcd",
-	diff_add_fg = "#2a5808",
+	diff_add_fg = "#1c4406",
 	diff_del_bg = "#fadccd",
-	diff_del_fg = "#9c2a14",
+	diff_del_fg = "#80200a",
 	diff_chg_bg = "#f4e8c2",
-	diff_chg_fg = "#806000",
+	diff_chg_fg = "#5a4008",
 	search_bg = "#ffe580",
 	search_fg = "#1a1c22",
 	cursor_line = "#e6e8ec",
 
-	bright_blue = "#4a8aac",
-	bright_magenta = "#bc7070",
+	bright_blue = "#366c8a",
+	bright_magenta = "#9a5050",
 }
 
 -- ----------------------------------------------------------------------------
@@ -191,7 +193,7 @@ local MONO_LIGHT = {
 	teal_br = "#1a1c22",
 	blue = "#2e3038", -- → fg1 (fields)
 	rose = "#44464c", -- → mid-gray (self/macros, italic)
-	comment = "#80828a", -- → fg_mute (italic)
+	comment = "#5e606a", -- comments — lifted to ~5.7:1 contrast (was fg_mute, only 4.5:1)
 
 	-- signals · barely-tinted light bgs
 	diff_add_bg = "#e8efe0",
